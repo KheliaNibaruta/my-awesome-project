@@ -24,17 +24,17 @@ jobs:
             - dependencies-{{ checksum "package.json" }}-{{ .Environment.CACHE_VERSION }}
             - dependencies-
       - run: yarn build
-      - run:
-          name: Copy deployment artifacts to workspace
-          command: |
-            cp doc-server/ /tmp/server-doc -r
-      - store_artifacts:
-          path: /tmp/server-doc
-      - persist_to_workspace:
-          root: /tmp
-          paths:
-            - server-doc
-  fondend-deploy:
+      #- run:
+         # name: Copy deployment artifacts to workspace
+         # command: |
+          #  cp doc-server/ /tmp/server-doc -r
+      #- store_artifacts:
+         # path: /tmp/server-doc
+     # - persist_to_workspace:
+          #root: /tmp
+          #paths:
+           # - server-doc
+  frondend-deploy:
     docker:
       - image: circleci/node:dubnium-browsers
     working_directory: ~/deploy-doc-server
@@ -71,7 +71,7 @@ workflows:
       - build:
           requires:
             - install-dependencies
-      - fondend-deploy:
+      - fr ondend-deploy:
           requires:
             - build
       - docker-buildandpush:
