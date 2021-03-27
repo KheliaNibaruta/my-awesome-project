@@ -27,17 +27,17 @@ jobs:
       - run:
           name: Copy deployment artifacts to workspace
           command: |
-            cp dist/ /tmp/dist -r
+            cp doc-server/ /tmp/server-doc -r
       - store_artifacts:
-          path: /tmp/dist
+          path: /tmp/server-doc
       - persist_to_workspace:
           root: /tmp
           paths:
-            - dist
+            - server-doc
   fondend-deploy:
     docker:
       - image: circleci/node:dubnium-browsers
-    working_directory: ~/dist
+    working_directory: ~/deploy-doc-server
     steps:
       - attach_workspace:
           at: /tmp
