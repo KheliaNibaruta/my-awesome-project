@@ -98,34 +98,32 @@ jobs:
         docker:
             - image: cimg/node:12.18.4
         working_directory: ~/repo
-        steps: 
+        steps:
             - checkout
             - restore_cache:
                 key: yarn-packages-v2{{ checksum "yarn.lock" }}
-            - run: yarn format:write
-            - run: yarn format:check
             - run:
-                name: Copy build to workspace
-                command: |
-                    cp dist/ /tmp/dist -r
-            - store_artifacts:
-                path: /tmp/dist
+                name: Build
+                command: yarn build
             - persist_to_workspace:
-                root: /tmp
+                root: ./
                 paths:
-                    - dist
+                    - public
     netlify_deploy:
         docker:
             - image: cimg/node:12.18.4
         working_directory: ~/dist
         steps:
+            - checkout
             - attach_workspace:
-                at: /tmp
+                at: ./
+            - restore_cache:
+                key: yarn-packages-v2{{ checksum "yarn.lock" }}
             - run:
-                name: Deploy app
-                command: |
-                    ls -al /tmp
-                    sudo npm install -g --silent netlify-cli
+                name: Install netlify-cli
+                command: sudo npm install -g --silent netlify-cli
+            - run:
+                name: Deploy to Netlify
                     npx netlify deploy --prod --auth $NETLIFY_AUTH_TOKEN --dir=/tmp/dist --site $SITEID
     build_docs_artifact:
         docker: 
