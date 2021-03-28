@@ -1,4 +1,5 @@
-FROM node:dubnium
-COPY . /app
-WORKDIR /app
-CMD yarn global add node-gyp && yarn install && yarn start
+FROM node:12.18.4
+COPY ["package.json", "yarn.lock", "./"]
+RUN yarn install
+COPY . .
+CMD ["yarn", "start"]

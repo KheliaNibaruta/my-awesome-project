@@ -37,7 +37,7 @@ workflows:
 jobs:
     build:
         docker:
-            - image: cimg/node:dubnium
+            - image: cimg/node:12.18.4
         steps:
             - checkout
             - restore_cache:
@@ -49,7 +49,7 @@ jobs:
                     - ./node_modules
     lint:
         docker:
-            - image: cimg/node:dubnium
+            - image: cimg/node:12.18.4
         steps:
             - checkout
             - restore_cache:
@@ -57,7 +57,7 @@ jobs:
             - run : yarn lint && yarn format:check
     test:
         docker:
-            - image: cimg/node:dubnium
+            - image: cimg/node:12.18.4
         steps:
             - checkout
             - restore_cache:
@@ -97,7 +97,7 @@ jobs:
                     docker push $IMAGE_NAME:latest
     build_docs_artifact:
         docker: 
-            - image: cimg/node:dubnium
+            - image: cimg/node:12.18.4
         steps: 
             - checkout
             - restore_cache:
