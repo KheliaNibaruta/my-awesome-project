@@ -94,36 +94,39 @@ jobs:
                     docker tag $IMAGE_NAME:app $IMAGE_NAME:latest
                     docker push $IMAGE_NAME:$CIRCLE_BUILD_NUM
                     docker push $IMAGE_NAME:latest
-    server-doc-build:
-        docker:
-            - image: cimg/node:12.18.4
-        working_directory: ~/repo
-        steps:
-            - checkout
-        - restore_cache:
-                key: yarn-packages-v2{{ checksum "yarn.lock" }}
-        - run: npm install
-        - run: npm run build
-        - run:
-            name: Copy deployment artifacts to workspace
-            command: |
-                cp doc-server/ /tmp/server-doc -r
+    netlify_build:
+    docker:
+      - image: cimg/node:12.18.4
+    working_directory: ~/repo
+    steps: 
+      - checkout
+      - restore_cache:
+            key: yarn-packages-v2{{ checksum "yarn.lock" }}
+      - run: npm install
+      - run: npm run build
+      - run:
+          name: Copy build to workspace
+          command: |
+            cp dist/ /tmp/dist -r
       - store_artifacts:
-          path: /tmp/server-doc
+          path: /tmp/dist
       - persist_to_workspace:
           root: /tmp
           paths:
-            - server-doc
-    server-doc-deploy:
-        docker:
-            - image: cimg/node:12.18.4
-        working_directory: ~/deploy-doc-server
-        steps:
-            - attach_workspace:
-                at: /tmp
-        - run:
-            name: Deploy app
-            command: npx netlify-cli deploy --prod --auth $NETLIFY_AUTH_TOKEN --dir=/tmp/dist --site $SITEID
+            - dist
+  netlify_deploy:
+    docker:
+      - image: cimg/node:12.18.4
+    working_directory: ~/my-awesome-project
+    steps:
+      - attach_workspace:
+          at: /tmp
+      - run:
+          name: Deploy app
+          command: |
+            ls -al /tmp
+            sudo npm install -g --silent netlify-cli
+            npx netlify deploy --prod --auth $NETLIFY_AUTH_TOKEN --dir=/tmp/dist --site $SITEID
     build_docs_artifact:
         docker: 
             - image: cimg/node:12.18.4
