@@ -62,6 +62,15 @@ jobs:
             - restore_cache:
                 key: yarn-packages-v2{{ checksum "yarn.lock" }}
             - run : yarn test
+    lint:
+        docker:
+            - image: cimg/node:12.18.4
+        working_directory: ~/repo
+        steps:
+            - checkout
+            - restore_cache:
+                key: yarn-packages-v2{{ checksum "yarn.lock" }}
+            - run: yarn format:check
     build_docker:
         environment:
             IMAGE_NAME: 698148/my-awesome-project
