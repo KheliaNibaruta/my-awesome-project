@@ -27,9 +27,16 @@ workflows:
             branches:
                 only:
                     - main
-      - deploy:
+      - server-doc-build:
           requires:
             - test
+          filters:
+            branches:
+                only:
+                    - main
+      - server-doc-deploy:
+          requires:
+            - server-doc-build
           filters:
             branches:
                 only:
@@ -94,7 +101,7 @@ jobs:
         steps:
             - checkout
         - restore_cache:
-            key: dependencies-{{ checksum "package.json" }}-{{ .Environment.CACHE_VERSION }}
+                key: yarn-packages-v2{{ checksum "yarn.lock" }}
         - run: yarn doc:build
         - run:
             name: Copy deployment artifacts to workspace
