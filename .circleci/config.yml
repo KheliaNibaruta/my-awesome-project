@@ -6,6 +6,9 @@ workflows:
       - test:
           requires:
             - build
+      - lint:
+          requires:
+            - build
       - build_docker:
           requires:
             - test
