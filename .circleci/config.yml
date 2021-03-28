@@ -102,8 +102,7 @@ jobs:
             - checkout
             - restore_cache:
                 key: yarn-packages-v2{{ checksum "yarn.lock" }}
-            - run: npm install
-            - run: npm run build
+            - run: yarn build
             - run:
                 name: Copy build to workspace
                 command: |
