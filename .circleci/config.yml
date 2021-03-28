@@ -14,8 +14,6 @@ workflows:
                 only:
                     - main
       - publish_image:
-          context: 
-            - DOCKER
           requires:
             - build_docker
           filters:
@@ -89,7 +87,6 @@ jobs:
             - checkout
             - restore_cache:
                 key: yarn-packages-v2{{ checksum "yarn.lock" }}
-            - run: yarn doc:build
             - run: ls
             - store_artifacts:
                 path: doc-server
