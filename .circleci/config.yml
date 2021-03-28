@@ -108,12 +108,12 @@ jobs:
                 name: Copy build to workspace
                 command: |
                     cp dist/ /tmp/dist -r
-        - store_artifacts:
-            path: /tmp/dist
-        - persist_to_workspace:
-            root: /tmp
-            paths:
-                - dist
+            - store_artifacts:
+                path: /tmp/dist
+            - persist_to_workspace:
+                root: /tmp
+                paths:
+                    - dist
     netlify_deploy:
         docker:
             - image: cimg/node:12.18.4
