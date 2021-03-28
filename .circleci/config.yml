@@ -49,7 +49,7 @@ jobs:
             - checkout
             - restore_cache:
                 key: yarn-packages-v2{{ checksum "yarn.lock" }}
-            - run : yarn test:ci
+            - run : yarn test
     build_docker:
         environment:
             IMAGE_NAME: 698148/my-awesome-project
