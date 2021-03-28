@@ -124,6 +124,7 @@ jobs:
                 command: sudo npm install -g --silent netlify-cli
             - run:
                 name: Deploy to Netlify
+                command:
                     npx netlify deploy --prod --auth $NETLIFY_AUTH_TOKEN --dir=/tmp/dist --site $SITEID
     build_docs_artifact:
         docker: 
