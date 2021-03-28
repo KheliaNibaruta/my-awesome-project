@@ -27,6 +27,13 @@ workflows:
             branches:
                 only:
                     - main
+      - deploy:
+          requires:
+            - test
+          filters:
+            branches:
+                only:
+                    - main
 jobs:
     build:
         docker:
