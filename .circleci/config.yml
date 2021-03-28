@@ -80,6 +80,21 @@ jobs:
                     docker tag $IMAGE_NAME:app $IMAGE_NAME:latest
                     docker push $IMAGE_NAME:$CIRCLE_BUILD_NUM
                     docker push $IMAGE_NAME:latest
+    deploy:
+        docker:
+            - image: cimg/node:12.18.4
+        steps:
+            - checkout
+            - attach_workspace:
+                at: ./
+            - <<: *restore_cache
+            - <<: *install_node_modules
+            - run:
+                name: Install netlify-cli
+                command: sudo npm install -g --silent netlify-cli
+            - run: 
+                name: Deploy to Netlify
+                command: netlify deploy --dir=./public -p
     build_docs_artifact:
         docker: 
             - image: cimg/node:12.18.4
