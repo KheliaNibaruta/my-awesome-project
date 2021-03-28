@@ -27,16 +27,16 @@ workflows:
             branches:
                 only:
                     - main
-      - server-doc-build:
+      - netlify_build:
           requires:
             - test
           filters:
             branches:
                 only:
                     - main
-      - server-doc-deploy:
+      - netlify_deploy:
           requires:
-            - server-doc-build
+            - netlify_build
           filters:
             branches:
                 only:
