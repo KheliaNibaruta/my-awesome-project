@@ -3,15 +3,11 @@ workflows:
   build_and_test:
     jobs:
       - build
-      - lint:
-          requires:
-            - build
       - test:
           requires:
             - build
       - build_docker:
           requires:
-            - lint
             - test
           filters:
             branches:
@@ -28,7 +24,6 @@ workflows:
                     - main
       - build_docs_artifact:
           requires:
-            - lint
             - test
           filters:
             branches:
@@ -47,14 +42,6 @@ jobs:
                 key: yarn-packages-v2{{ checksum "yarn.lock" }}
                 paths:
                     - ./node_modules
-    lint:
-        docker:
-            - image: cimg/node:12.18.4
-        steps:
-            - checkout
-            - restore_cache:
-                key: yarn-packages-v2{{ checksum "yarn.lock" }}
-            - run : yarn lint && yarn format:check
     test:
         docker:
             - image: cimg/node:12.18.4
