@@ -116,7 +116,7 @@ jobs:
     netlify_deploy:
         docker:
             - image: cimg/node:12.18.4
-        working_directory: ~/my-awesome-project
+        working_directory: ~/dist
         steps:
             - attach_workspace:
                 at: /tmp
